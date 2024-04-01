@@ -18,6 +18,12 @@
 > [!NOTE]
 > Highlights information that users should take into account, even when skimming.
 
+> [!ABSTRACT]
+> A summary or abstract of the information the user is reading.
+
+> [!TODO]
+> A reminder of an action to take at a later time.
+
 > [!TIP]
 > Optional information to help a user be more successful.
 
