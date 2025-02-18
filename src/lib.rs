@@ -3,9 +3,9 @@ use mdbook::errors::Error;
 use mdbook::preprocess::PreprocessorContext;
 use once_cell::sync::Lazy;
 use regex::Regex;
-use rust_embed::RustEmbed;
+use rust_embed::Embed;
 
-#[derive(RustEmbed)]
+#[derive(Embed)]
 #[folder = "assets/"]
 struct Asset;
 
