@@ -1,6 +1,6 @@
-use mdbook::book::{Book, BookItem, Chapter};
-use mdbook::errors::Error;
-use mdbook::preprocess::PreprocessorContext;
+use mdbook_driver::book::{Book, BookItem, Chapter};
+use mdbook_driver::errors::Error;
+use mdbook_preprocessor::PreprocessorContext;
 use once_cell::sync::Lazy;
 use regex::Regex;
 use rust_embed::Embed;
@@ -11,13 +11,13 @@ struct Asset;
 
 pub struct Preprocessor;
 
-impl mdbook::preprocess::Preprocessor for Preprocessor {
+impl mdbook_preprocessor::Preprocessor for Preprocessor {
     fn name(&self) -> &str {
         "callouts"
     }
 
-    fn supports_renderer(&self, renderer: &str) -> bool {
-        renderer == "html"
+    fn supports_renderer(&self, renderer: &str) -> Result<bool, Error> {
+        Ok(renderer == "html")
     }
 
     fn run(&self, _ctx: &PreprocessorContext, mut book: Book) -> Result<Book, Error> {

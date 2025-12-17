@@ -1,6 +1,6 @@
 use clap::{Parser, Subcommand};
-use mdbook::errors::Error;
-use mdbook::preprocess::{CmdPreprocessor, Preprocessor};
+use mdbook_driver::errors::Error;
+use mdbook_preprocessor::Preprocessor;
 use semver::{Version, VersionReq};
 
 #[derive(Parser, Debug)]
@@ -28,7 +28,7 @@ fn main() {
 }
 
 fn handle_supports(pre: &dyn Preprocessor, renderer: &str) {
-    if pre.supports_renderer(renderer) {
+    if let Ok(true) = pre.supports_renderer(renderer) {
         std::process::exit(0);
     } else {
         std::process::exit(1);
@@ -36,15 +36,15 @@ fn handle_supports(pre: &dyn Preprocessor, renderer: &str) {
 }
 
 fn handle_preprocessing(pre: &dyn Preprocessor) -> Result<(), Error> {
-    let (ctx, book) = CmdPreprocessor::parse_input(std::io::stdin())?;
+    let (ctx, book) = mdbook_preprocessor::parse_input(std::io::stdin())?;
 
     let book_version = Version::parse(&ctx.mdbook_version)?;
-    let version_req = VersionReq::parse(mdbook::MDBOOK_VERSION)?;
+    let version_req = VersionReq::parse(mdbook_preprocessor::MDBOOK_VERSION)?;
     if !version_req.matches(&book_version) {
         eprintln!(
             "Warning: The {} plugin was built against version {} of mdbook, but we're being called from version {}",
             pre.name(),
-            mdbook::MDBOOK_VERSION,
+            mdbook_preprocessor::MDBOOK_VERSION,
             ctx.mdbook_version,
         );
     }
